@@ -14,6 +14,26 @@ struct Login: Codable {
     let token: String
 }
 
+enum SeSACError: Int, Error {
+    case invalidAuthorization = 401
+    case takenEmail = 406
+    case emptyParameter = 501
+}
+
+extension SeSACError: LocalizedError {
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidAuthorization:
+            return "토큰이 만료되었습니다. 다시 로그인 해주세요"
+        case .takenEmail:
+            return "이미 가입된 회원입니다. 로그인 해주세요."
+        case .emptyParameter:
+            return "머가 없습니다."
+        }
+    }
+}
+
 class APIService {
     
     static let shared = APIService()
@@ -43,10 +63,6 @@ class APIService {
                 print(response.response?.statusCode)
             }
         }
-            
-            
-            
-        
     }
     
     func profile() {
@@ -61,4 +77,6 @@ class APIService {
             }
         }
     }
+
+    
 }
